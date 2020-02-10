@@ -35,7 +35,11 @@ let routes = [
     {
         path: '/qualification',
         component: require('./components/Qualification/List.vue').default
-    }
+    },
+    {
+        path: '/Img',
+        component: require('./components/Upload/List.vue').default
+    },
 ]
 
 const router = new VueRouter({

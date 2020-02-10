@@ -24,4 +24,13 @@ class QualificationController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+    public function editQualification(Request $request){
+        $qualification = Qualification::find($request->id);
+        $qualification->majors = $request->majors;
+        $qualification->competent_units = $request->competent_units;
+
+        $qualification->save();
+
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

@@ -1,81 +1,82 @@
 <template>
     <div class="wapp">
         <a-button type="primary" @click="showModal">Tạo mới</a-button>
-        <div class ="table">
+        <div class="table">
             <a-modal
-                    :title="'Tạo mới'"
-                    :visible="visible"
-                    @ok="handleOk"
-                    @cancel="handleCancel"
+                :title="'Tạo mới'"
+                :visible="visible || isUpdate"
+                @ok="handleOk"
+                @cancel="handleCancel"
             >
                 <a-form :form="form">
                     <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Tên lớp"
+                        :label-col="formItemLayout.labelCol"
+                        :wrapper-col="formItemLayout.wrapperCol"
+                        label="Tên lớp"
                     >
                         <a-input
-                                v-decorator="[
+                            v-decorator="[
               'name',
               {
               rules: [{
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
-
+                initialValue: dataUpdate ? dataUpdate.name : ''
               },
             ]"
                         />
                     </a-form-item>
                     <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Sĩ số"
+                        :label-col="formItemLayout.labelCol"
+                        :wrapper-col="formItemLayout.wrapperCol"
+                        label="Sĩ số"
                     >
                         <a-input-number
-                                v-decorator="[
+                            v-decorator="[
               'number',
               {
               rules: [{
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
+                initialValue: dataUpdate ? dataUpdate.number : ''
               },
             ]"
                         />
                     </a-form-item>
                     <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Ngày bắt đầu"
+                        :label-col="formItemLayout.labelCol"
+                        :wrapper-col="formItemLayout.wrapperCol"
+                        label="Ngày bắt đầu"
                     >
                         <a-date-picker
-                                v-decorator="[
+                            v-decorator="[
               'start_time',
               {
               rules: [{
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
-
+                initialValue: dataUpdate ? moment(moment(String(dataUpdate.start_time)).format('YYYY/MM/DD'), dateFormat) : moment(moment(String(20200101)).format('YYYY/MM/DD'), dateFormat)
               },
             ]"
                         />
                     </a-form-item>
                     <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Lịch học"
+                        :label-col="formItemLayout.labelCol"
+                        :wrapper-col="formItemLayout.wrapperCol"
+                        label="Lịch học"
                     >
                         <a-input
-                                v-decorator="[
+                            v-decorator="[
               'schedule',
               {
               rules: [{
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
-
+                initialValue: dataUpdate ? dataUpdate.schedule : ''
               },
             ]"
                         />
@@ -90,22 +91,23 @@
               rules: [{
                 required: true,
                 message: 'Bạn phải nhập trường này'
-                }]
+                }],
               },
             ]"
-                >
-                    <a-select
+                    >
+                        <a-select
                             showSearch
                             placeholder="Chọn Giáo viên"
                             style="width: 200px"
                             @change="selectedTeacher"
-                    >
-                        <a-select-option v-for="Teacher in Teachers" :value="Teacher.id" :key="Teacher.id">
-                            {{ Teacher.name}}
-                        </a-select-option>
+                            :defaultValue="dataUpdate ? dataUpdate.teacher_id : 1"
+                        >
+                            <a-select-option v-for="Teacher in Teachers" :value="Teacher.id" :key="Teacher.id">
+                                {{ Teacher.name}}
+                            </a-select-option>
 
-                    </a-select>
-                </a-form-item>
+                        </a-select>
+                    </a-form-item>
                     <a-form-item
                         :label-col="formItemLayout.labelCol"
                         :wrapper-col="formItemLayout.wrapperCol"
@@ -119,19 +121,20 @@
                 }]
               },
             ]"
-                >
-                    <a-select
+                    >
+                        <a-select
                             showSearch
                             placeholder="Chọn khóa học"
                             style="width: 200px"
                             @change="selectedCourse"
-                    >
-                        <a-select-option v-for="Course in Courses" :value="Course.id" :key="Course.id">
-                            {{ Course.name}}
-                        </a-select-option>
+                            :defaultValue="dataUpdate ? dataUpdate.course_id : 1"
+                        >
+                            <a-select-option v-for="Course in Courses" :value="Course.id" :key="Course.id">
+                                {{ Course.name}}
+                            </a-select-option>
 
-                    </a-select>
-                </a-form-item>
+                        </a-select>
+                    </a-form-item>
                 </a-form>
 
             </a-modal>
@@ -139,67 +142,108 @@
     </div>
 </template>
 <script>
-    import { Button,form,Modal } from 'ant-design-vue'
+    import {Button, form, Modal} from 'ant-design-vue'
+    import {store,actions} from "../../categoryStore";
+    import moment from "moment";
     const formItemLayout = {
-        labelCol: {span: 4},
-        wrapperCol: {span: 20},
+        labelCol: {span: 6},
+        wrapperCol: {span: 15},
     };
     export default {
         data() {
             return {
-                visible : false,
+                visible: false,
                 formItemLayout,
-                Teachers : [],
-                Courses : [],
-                CourseId :1,
-                TeacherId :1,
+                Teachers: [],
+                Courses: [],
+                CourseId: 1,
+                TeacherId: 1,
+                dateFormat: 'YYYY/MM/DD',
                 form: this.$form.createForm(this, {name: 'dynamic_rule'}),
             }
         },
-        created (){
-          this.getTeacher();
-          this.getCourse();
+        created() {
+            this.getTeacher();
+            this.getCourse();
         },
-        methods:{
-            showModal(){
+        computed: {
+            isUpdate() {
+                return store.isUpdate
+            },
+            dataUpdate() {
+                this.clearForm();
+                return store.dataUpdate
+            }
+        },
+        methods: {
+            showModal() {
                 this.visible = true
+                this.clearForm();
             },
-            selectedTeacher(value){
-              this.TeacherId = value;
-              console.log(this.TeacherId)
-            },selectedCourse(value){
-              this.CourseId = value;
-              console.log(this.CourseId)
+            selectedTeacher(value) {
+                this.TeacherId = value;
+            }, selectedCourse(value) {
+                this.CourseId = value;
             },
-            handleOk(){
+            moment,
+            getDate(date) {
+                var dateString = moment(String(date)).format('DD/MM/YYYY')
+                return  dateString;
+            },
+            handleOk() {
                 this.form.validateFields((err, values) => {
                     if (!err) {
-                        let data = {
-                            "name": values.name,
-                            "number": values.number,
-                            "start_time": values.start_time.format('YYYY-MM-DD'),
-                            "teacher_id": this.TeacherId,
-                            "course_id": this.CourseId,
-                            "schedule": values.schedule,
-                        }
-                        console.log(data)
-                        axios.post('http://127.0.0.1:8000/api/addClass',data).then(response => {
-                            if (response.data.status === 200) {
-                                console.log("Thêm mới thành công")
-                                this.visible = false
-                                location.reload();
-                                this.$message.success('Thêm mới thành công');
+                        if (store.isUpdate){
+                            let data = {
+                                "id" : store.dataUpdate.id,
+                                "name": values.name,
+                                "number": values.number,
+                                "start_time": Number(values.start_time.format('YYYYMMDD')),
+                                "teacher_id": this.TeacherId,
+                                "course_id": this.CourseId,
+                                "schedule": values.schedule,
                             }
-                        }).catch(err => {
-                            console.log(err, 'co loi xay ra')
-                        })
+                            console.log(data)
+                            axios.post('http://127.0.0.1:8000/api/editClass', data).then(response => {
+                                if (response.data.status === 200) {
+                                    console.log("Sửa thành công")
+                                    this.visible = false
+                                    location.reload();
+                                    this.$message.success('Sửa thành công');
+                                }
+                            }).catch(err => {
+                                console.log(err, 'co loi xay ra')
+                            })
+                        }else {
+                            let data = {
+                                "name": values.name,
+                                "number": values.number,
+                                "start_time": Number(values.start_time.format('YYYYMMDD')),
+                                "teacher_id": this.TeacherId,
+                                "course_id": this.CourseId,
+                                "schedule": values.schedule,
+                            }
+                            axios.post('http://127.0.0.1:8000/api/addClass', data).then(response => {
+                                if (response.data.status === 200) {
+                                    console.log("Thêm mới thành công")
+                                    this.visible = false
+                                    location.reload();
+                                    this.$message.success('Thêm mới thành công');
+                                }
+                            }).catch(err => {
+                                console.log(err, 'co loi xay ra')
+                            })
+                        }
                     }
                 })
             },
-            handleCancel(){
-                this.visible = false
+            handleCancel() {
+                this.form.resetFields()
+                this.visible = false;
+                store.isUpdate = false
+                actions.update(false, null)
             },
-            getTeacher(){
+            getTeacher() {
                 axios.get('http://127.0.0.1:8000/api/listTeacher').then(response => {
                     if (response.data && response.data.status === 200) {
                         this.Teachers = response.data.data;
@@ -208,7 +252,7 @@
                 }).catch(err => {
                     console.log(err, 'co loi xay ra')
                 })
-            },getCourse(){
+            }, getCourse() {
                 axios.get('http://127.0.0.1:8000/api/listCourse').then(response => {
                     if (response.data && response.data.status === 200) {
                         this.Courses = response.data.data;
@@ -217,15 +261,18 @@
                 }).catch(err => {
                     console.log(err, 'co loi xay ra')
                 })
-            },
+            },clearForm(){
+                this.form.resetFields();
+            }
         }
     }
 </script>
 <style lang="scss">
-    .table{
+    .table {
         margin: 20px;
     }
-    .wapp{
-        padding :20px;
+
+    .wapp {
+        padding: 20px;
     }
 </style>

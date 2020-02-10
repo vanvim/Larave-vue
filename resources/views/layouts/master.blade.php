@@ -113,14 +113,14 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <router-link to="/Img" class="nav-link">
                             <i class="fa fa-list-alt" aria-hidden="true"></i>
                             <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
+                                Upload Img
                             </p>
-                        </a>
+                        </router-link>
                     </li>
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
