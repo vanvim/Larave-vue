@@ -44,41 +44,57 @@
                 text-align: center;
             }
 
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-            #slideshow {
-                /* margin: 50px auto; */
+            ._slider {
                 position: relative;
-                width: 300px;
-                height: 510px;
-                padding: 10px;
-                /* box-shadow: 0 0 30px rgba(0,0,0,0.4); */
+                overflow: hidden;
+                margin-left: 15px;
+            }
+            ._slider:hover ._slider_next, ._slider:hover ._slider_prev {
+                display: block;
+            }
+            ._slider_next, ._slider_prev {
+                position: absolute;
+                top: 35%;
+                z-index: 999;
+                display: none;
+                width: auto;
+                height: auto;
+                padding: 2% 4%;
+                background: #000;
+                color: #fff;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 2em;
+                opacity: 0.8;
+                cursor: pointer;
+            }
+            ._slider_next:hover, ._slider_prev:hover {
+                opacity: 1;
+                -webkit-transition: all 0.2s ease;
+            }
+            ._slider_next {
+                right: 0;
+            }
+            ._slider ul {
+                position: relative;
+                height: 500px;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            ._slider ul li {
+                float: left;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                background: #ccc;
+                display: block;
+                width: 500px;
+                line-height: 200px;
+                text-align: center;
             }
 
-            #slideshow > div {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-            }
-            #slideshow > div > img {
-                border: 2px solid white;
-                box-shadow: 0 0 20px white;
-            }
+
         </style>
     </head>
     <body>
@@ -98,27 +114,15 @@
             @endif
 
             <div class="content">
-                <div id="slideshow">
-                    <div>
-                        <img src="http://farm6.static.flickr.com/5224/5658667829_2bb7d42a9c_m.jpg" alt="mustang.jpg"><br>
-                        A newer Mustang.
-                    </div>
-                    <div>
-                        <img src="http://www.htmlgoodies.com/imagesvr_ce/3798/camaro.jpg" alt="camaro.jpg"><br>
-                        A modern Camaro.
-                    </div>
-                    <div>
-                        <img src="http://www.htmlgoodies.com/imagesvr_ce/6859/classic.jpg" alt="classic.jpg"><br>
-                        An oldie but a goodie!
-                    </div>
-                    <div>
-                        <img src="http://www.htmlgoodies.com/imagesvr_ce/1767/classic2.jpg" alt="classic2.jpg"><br>
-                        More old cars.
-                    </div>
-                    <div>
-                        <img src="http://www.htmlgoodies.com/imagesvr_ce/5199/video_game_car.jpg" alt="video_game_car.jpg"><br>
-                        A good rendering of a classic race car.
-                    </div>
+                <div class="_slider">
+                    <a href="#" class="_slider_next">&#10095;</a>
+                    <a href="#" class="_slider_prev">&#10094;</a>
+                    <ul>
+                        <li>SLIDE 1</li>
+                        <li>SLIDE 2</li>
+                        <li>SLIDE 3</li>
+                        <li>SLIDE 4</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -126,17 +130,68 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
     <script type='text/javascript'>
-            $("#slideshow > div").hide();
+        jQuery(document).ready(function ($) {
 
-            setInterval(function() {
-                $('#slideshow > div:first')
-                    .fadeOut(1000)
-                    .next()
-                    .fadeIn(1000)
-                    .end()
-                    .appendTo('#slideshow');
-            },  5000);
+            var interval;
+            interval = setInterval(function () {
+                moveRight();
+            }, 3000);
+
+            $('._slider').mouseover(function(){
+                clearInterval(interval);
+            });
+
+            $('._slider').mouseleave(function(){
+                interval = setInterval(function () {
+                    moveRight();
+                }, 3000);
+            });
+
+            var slideCount = $('._slider ul li').length;
+            var slideWidth = $('._slider ul li').width();
+            var slideHeight = $('._slider ul li').height();
+            var sliderUlWidth = slideCount * slideWidth;
+
+            $('._slider').css({ width: slideWidth, height: slideHeight });
+
+            $('._slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+
+            $('._slider ul li:last-child').prependTo('._slider ul');
+
+            function moveLeft() {
+                $('._slider ul').animate({
+                    left: + slideWidth
+                }, 200, function () {
+                    $('._slider ul li:last-child').prependTo('._slider ul');
+                    $('._slider ul').css('left', '');
+                });
+            };
+
+            function moveRight() {
+                $('._slider ul').animate({
+                    left: - slideWidth
+                }, 200, function () {
+                    $('._slider ul li:first-child').appendTo('._slider ul');
+                    $('._slider ul').css('left', '');
+                });
+            };
+
+            $('._slider_prev').click(function () {
+                moveLeft();
+                return false;
+            });
+
+            $('._slider_next').click(function () {
+                moveRight();
+                return false;
+            });
+
+        });
 
     </script>
 </html>
