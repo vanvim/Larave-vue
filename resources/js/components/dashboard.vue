@@ -1,3 +1,3 @@
 <template>
-    <h1>Trang chủ admin</h1>
+    <h1>Trang chủ admin vue</h1>
 </template>
