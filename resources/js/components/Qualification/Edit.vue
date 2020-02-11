@@ -4,7 +4,7 @@
         <div class="table">
             <a-modal
                     :title="'Thêm mới khóa học'"
-                    :visible="visible"
+                    :visible="visible || isUpdate"
                     @ok="handleOk"
                     @cancel="handleCancel"
             >
@@ -22,7 +22,7 @@
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
-
+                initialValue: dataUpdate ? dataUpdate.majors : ''
               },
             ]"
                         />
@@ -40,7 +40,7 @@
                 required: true,
                 message: 'Bạn phải nhập trường này'
                 }],
-
+                initialValue: dataUpdate ? dataUpdate.competent_units : ''
               },
             ]"
                         />
@@ -54,7 +54,7 @@
 </template>
 <script>
     import {Button, form, Modal} from 'ant-design-vue'
-
+    import {store,actions} from "../../categoryStore";
     const formItemLayout = {
         labelCol: {span: 3},
         wrapperCol: {span: 20},
@@ -67,34 +67,68 @@
                 form: this.$form.createForm(this, {name: 'dynamic_rule'}),
             }
         },
+        computed: {
+            isUpdate() {
+                return store.isUpdate
+            },
+            dataUpdate() {
+                this.clearForm();
+                return store.dataUpdate
+            }
+        },
         methods: {
             showModal() {
-                console.log('sdfghjkl')
+                this.clearForm();
                 this.visible = true
             },
             handleOk() {
                 this.form.validateFields((err, values) => {
                     if (!err) {
-                        let data = {
-                            "majors": values.majors,
-                            "competent_units": values.competent_units
-                        }
-                        console.log(data)
-                        axios.post('http://127.0.0.1:8000/api/addQualification',data).then(response => {
-                            if (response.data.status === 200) {
-                                console.log("Thêm mới thành công")
-                                this.visible = false
-                                location.reload();
-                                this.$message.success('Thêm mới thành công');
+                        if (store.isUpdate){
+                            let data = {
+                                "id" : store.dataUpdate.id,
+                                "majors": values.majors,
+                                "competent_units": values.competent_units
                             }
-                        }).catch(err => {
-                            console.log(err, 'co loi xay ra')
-                        })
+                            console.log(data)
+                            axios.post('http://127.0.0.1:8000/api/editQualification',data).then(response => {
+                                if (response.data.status === 200) {
+                                    console.log("Sửa thành công")
+                                    this.visible = false
+                                    location.reload();
+                                    this.$message.success('Sửa thành công');
+                                }
+                            }).catch(err => {
+                                console.log(err, 'co loi xay ra')
+                            })
+                        } else {
+                            let data = {
+                                "majors": values.majors,
+                                "competent_units": values.competent_units
+                            }
+                            console.log(data)
+                            axios.post('http://127.0.0.1:8000/api/addQualification',data).then(response => {
+                                if (response.data.status === 200) {
+                                    console.log("Thêm mới thành công")
+                                    this.visible = false
+                                    location.reload();
+                                    this.$message.success('Thêm mới thành công');
+                                }
+                            }).catch(err => {
+                                console.log(err, 'co loi xay ra')
+                            })
+                        }
                     }
                 })
             },
             handleCancel() {
-                this.visible = false
+                this.form.resetFields()
+                this.visible = false;
+                store.isUpdate = false
+                actions.update(false, null)
+            },
+            clearForm(){
+                this.form.resetFields();
             }
         }
     }

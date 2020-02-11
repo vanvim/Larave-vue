@@ -37,4 +37,17 @@ class ClassController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+    public function editClass(Request $request){
+        $class = ClassRoom::find($request->id);
+         $class->name = $request->name;
+         $class->start_time = $request->start_time;
+         $class->number = $request->number;
+         $class->schedule = $request->schedule;
+         $class->course_id = $request->course_id;
+         $class->teacher_id = $request->teacher_id;
+
+         $class->save();
+
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

@@ -25,4 +25,13 @@ class CourseController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+    public function editCourse(Request $request){
+        $course = Course::find($request->id);
+        $course->name = $request->name;
+        $course->date_training = $request->date_training;
+        $course->tuition = $request->tuition;
+        $course->save();
+
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

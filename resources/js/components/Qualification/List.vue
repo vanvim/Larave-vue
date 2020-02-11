@@ -6,12 +6,20 @@
                 :dataSource="data"
                 rowKey = 'id'
         >
+            <template slot="operation" slot-scope="text, record, index">
+                <div class="editable-row-operations">
+        <span>
+          <a @click="() => edit(record)"><i class="fa fa-pencil edit" aria-hidden="true"></i> Edit</a>
 
+        </span>
+                </div>
+            </template>
         </a-table>
     </div>
 </template>
 <script>
     import Edit from './Edit';
+    import {store, actions} from "../../categoryStore";
     const columns = [
         {
             title: 'ID',
@@ -27,7 +35,13 @@
             title: 'Đơn vị cấp',
             dataIndex: 'competent_units',
             key: 'competent_units',
+        }, {
+            title: 'Hành động',
+            dataIndex: 'operation',
+            key: 'operation',
+            scopedSlots: {customRender: 'operation'},
         },
+
 
     ];
     export default {
@@ -53,6 +67,8 @@
                 }).catch(err => {
                     console.log(err, 'co loi xay ra')
                 })
+            },edit(record) {
+                actions.update(true, record)
             }
         }
     }

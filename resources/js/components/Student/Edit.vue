@@ -186,17 +186,14 @@
                 this.classId = value;
             },
             onImageChange(e){
-                let files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
-                this.createImage(files[0]);
-            },createImage(file) {
-                let reader = new FileReader();
-                let vm = this;
-                reader.onload = (e) => {
-                    vm.img = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                let file = new FileReader();
+
+                file.readAsDataURL(e.target.files[0]);
+
+                file.onload = (e) =>{
+                    this.img = e.target.result;
+                }
+
             },
             handleOk(e) {
                 this.form.validateFields((err, values) => {
@@ -211,11 +208,12 @@
                             "class_id": this.classId,
                             "img" : this.img,
                         }
-                        // console.log(data)
-                        // console.log()
                         axios.post('http://127.0.0.1:8000/api/addStudent', data).then(response => {
                             if (response.data.status === 200) {
+                                console.log("Thêm mới thành công")
                                 this.visible = false
+                                location.reload();
+                                this.$message.success('Thêm mới thành công');
                             }
                         }).catch(err => {
                             console.log(err, 'co loi xay ra')

@@ -10,6 +10,9 @@
                 <p v-if="record.gender == '0'"> Nam</p>
                 <p v-if="record.gender == '1'"> Nữ</p>
             </div>
+            <div slot="img" slot-scope="text, record, index">
+                <img :src="'./img/'+record.img" width="100px">
+            </div>
         </a-table>
     </div>
 </template>
@@ -53,6 +56,12 @@
             dataIndex: 'qualification',
             key: 'qualification',
         },
+        {
+            title: 'img',
+            dataIndex: 'img',
+            key: 'img',
+            scopedSlots: { customRender: 'img' },
+        }
 
     ];
     export default {
