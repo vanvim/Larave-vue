@@ -50,4 +50,10 @@ class ClassController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+
+    public function deleteClass(Request $request){
+        $class = ClassRoom::find($request->id);
+        $class->delete();
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

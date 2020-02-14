@@ -33,4 +33,9 @@ class QualificationController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+    public function deleteQualification(Request $request){
+        $qualification = Qualification::find($request->id);
+        $qualification->delete();
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

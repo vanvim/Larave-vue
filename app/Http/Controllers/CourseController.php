@@ -34,4 +34,9 @@ class CourseController extends Controller
 
         return json_encode(['status' => 200, 'message' => 'success']);
     }
+    public function deleteCourse(Request $request){
+        $course = Course::find($request->id);
+        $course->delete();
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
 }

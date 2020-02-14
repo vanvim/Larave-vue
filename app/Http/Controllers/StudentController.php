@@ -29,15 +29,19 @@ class StudentController extends Controller
 
     public function addStudent(Request $request)
     {
-        $explode = explode(',', $request->img);
-        $decode = base64_decode($explode[1]);
-        if (Str::contains($explode[0], 'jpeg')) {
-            $etension = 'jpg';
-        } else {
-            $etension = 'png';
+        if($request->img != ''){
+            $explode = explode(',', $request->img);
+            $decode = base64_decode($explode[1]);
+            if (Str::contains($explode[0], 'jpeg')) {
+                $etension = 'jpg';
+            } else {
+                $etension = 'png';
+            }
+            $fileName = Str::random() . '.' . $etension;
+            $path = public_path() . '/img/' . $fileName;
+        }else{
+            $fileName ='';
         }
-        $fileName = Str::random() . '.' . $etension;
-        $path = public_path() . '/img/' . $fileName;
 
 
         $this->student->name = $request->name;
@@ -50,7 +54,48 @@ class StudentController extends Controller
         $this->student->img = $fileName;
 
         $this->student->save();
-        file_put_contents($path, $decode);
+        if ($request->img != ""){
+            file_put_contents($path, $decode);
+        }
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
+    public function editStudent(Request $request)
+    {
+        if($request->img != ''){
+            $explode = explode(',', $request->img);
+            $decode = base64_decode($explode[1]);
+            if (Str::contains($explode[0], 'jpeg')) {
+                $etension = 'jpg';
+            } else {
+                $etension = 'png';
+            }
+            $fileName = Str::random() . '.' . $etension;
+            $path = public_path() . '/img/' . $fileName;
+        }else{
+            $fileName ='';
+        }
+
+
+        $student = Student::find($request->id);
+        $student->name = $request->name;
+        $student->gender = $request->gender;
+        $student->birthday = $request->birthday;
+        $student->class_id = $request->class_id;
+        $student->phone = $request->phone;
+        $student->email = $request->email;
+        $student->address = $request->address;
+        $student->img = $fileName;
+
+        $student->save();
+        if ($request->img != ""){
+            file_put_contents($path, $decode);
+        }
+        return json_encode(['status' => 200, 'message' => 'success']);
+    }
+
+    public function deleteStudent(Request $request){
+        $student = Student::find($request->id);
+        $student->delete();
         return json_encode(['status' => 200, 'message' => 'success']);
     }
 }

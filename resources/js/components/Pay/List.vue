@@ -34,8 +34,8 @@
             key: 'tuition',
         },{
             title: 'Giảm giá',
-            dataIndex: 'tuition',
-            key: 'tuition',
+            dataIndex: 'sale',
+            key: 'sale',
         },{
             title: 'Số tiền phả trả',
             dataIndex: 'pay',
@@ -52,6 +52,10 @@
             title: 'Còn lại',
             dataIndex: 'rest',
             key: 'rest',
+        },{
+            title: 'Trạng thái',
+            dataIndex: 'status',
+            key: 'status',
         },
 
     ];

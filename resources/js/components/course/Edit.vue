@@ -113,12 +113,18 @@
                             console.log(data)
                             axios.post('http://127.0.0.1:8000/api/editCourse', data).then(response => {
                                 if (response.data.status === 200) {
-                                    console.log("Sửa thành công")
+                                    console.log("Thêm mới thành công")
                                     this.visible = false
                                     location.reload();
-                                    this.$message.success('Sửa thành công');
+                                    this.$message.success('Thêm mới thành công');
+                                    this.$notification['success']({
+                                        message: 'Thêm mới thành công',
+                                    });
                                 }
                             }).catch(err => {
+                                this.$notification['error']({
+                                    message: 'Thêm mới thất bại',
+                                });
                                 console.log(err, 'co loi xay ra')
                             })
                         }

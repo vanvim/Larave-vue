@@ -3,6 +3,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import VueRouter from 'vue-router'
 import 'ant-design-vue/dist/antd.css';
+import fontawesome from '@fortawesome/fontawesome-free/js/all.js';
 Vue.use(VueRouter)
 import Toasted from 'vue-toasted'
 Vue.use(Toasted, {
