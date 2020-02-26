@@ -10,7 +10,7 @@ class Teacher extends Model
     public $timestamps = false;
 
     public function class(){
-        return $this->hasMany('App\Model\Class','teacher_id','id');
+        return $this->hasMany('App\Model\ClassRoom','teacher_id','id');
     }
 
     public function qualification(){

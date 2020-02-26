@@ -299,8 +299,11 @@
                                 if (response.data.status === 200) {
                                     console.log("Sửa thành công")
                                     this.visible = false
-                                    location.reload();
+                                    this.$notification['success']({
+                                        message: 'Sửa thành công',
+                                    });
                                     this.$message.success('Sửa thành công');
+                                    location.reload();
                                 }
                             }).catch(err => {
                                 console.log(err, 'co loi xay ra')
@@ -319,6 +322,11 @@
                                     console.log("Thêm mới thành công")
                                     this.visible = false
                                     location.reload();
+                                    this.$notification['success']({
+                                        message: 'Notification Title',
+                                        description:
+                                            'Thêm mới thành công',
+                                    });
                                     this.$message.success('Thêm mới thành công');
                                 }
                             }).catch(err => {

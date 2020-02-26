@@ -8,4 +8,7 @@ class Course extends Model
 {
     public $table = 'course';
     public $timestamps = false;
+
+
 }
+

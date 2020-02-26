@@ -12,56 +12,19 @@
                     <a-form-item
                             :label-col="formItemLayout.labelCol"
                             :wrapper-col="formItemLayout.wrapperCol"
-                            label="Tên khóa học"
-                    >
-                        <a-input
-                                v-decorator="[
-              'name',
-              {
-              rules: [{
-                required: true,
-                message: 'Bạn phải nhập trường này'
-                }],
+                            label="Tên học viên ">
+                        <a-select
+                                showSearch
+                                placeholder="Chọn lớp học"
+                                style="width: 200px"
+                                @change="selectedClass"
+                                :defaultValue="dataUpdate ? dataUpdate.class_id : 1"
+                        >
+                            <a-select-option v-for="classRom in classRoms" :value="classRom.id" :key="classRom.id">
+                                {{ classRom.name}}
+                            </a-select-option>
 
-              },
-            ]"
-                        />
-                    </a-form-item>
-                    <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Thời gian học"
-                    >
-                        <a-input
-                                v-decorator="[
-              'date_training',
-              {
-              rules: [{
-                required: true,
-                message: 'Bạn phải nhập trường này'
-                }],
-
-              },
-            ]"
-                        />
-                    </a-form-item>
-                    <a-form-item
-                            :label-col="formItemLayout.labelCol"
-                            :wrapper-col="formItemLayout.wrapperCol"
-                            label="Học phí"
-                    >
-                        <a-input
-                                v-decorator="[
-              'tuition',
-              {
-              rules: [{
-                required: true,
-                message: 'Bạn phải nhập trường này'
-                }],
-
-              },
-            ]"
-                        />
+                        </a-select>
                     </a-form-item>
 
                 </a-form>

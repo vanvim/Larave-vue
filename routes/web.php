@@ -11,10 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','TrannningController@index');
 
+//Route::get('/','');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/khoa_hoc/{name}_{id}','DetailController@courseDetail' );

@@ -11,7 +11,7 @@ class Student extends Model
     protected $fillable = ['id','name','gender','phone','email','address','birthday','img','class_id'];
 
     public function class(){
-        return $this->belongsTo('App\Model\Class','class_id','id');
+        return $this->belongsTo('App\Model\ClassRoom','class_id','id');
     }
 
     public function pay(){
