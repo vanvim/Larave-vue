@@ -8,13 +8,13 @@
                 <div class="col-sm-6 col-xl-4 col-md-4 mb-4">
                     <div class="product">
                         <div class="product-image-thumb">
-                            <a href="{{ route('khoa_hoc',['name'=>str_slug($course->name), 'id'=>$course->id]) }}">
+                            <a href="{{ route('courseDetail',['id'=>$course->id]) }}">
                                 <img src="./img/1.jpg">
                             </a>
 
                         </div>
                         <div class="name">
-                            <a href="{{ route('khoa_hoc',['name'=>str_slug($course->name), 'id'=>$course->id]) }}">
+                            <a href="{{ route('courseDetail',['id'=>$course->id]) }}">
                                 <h2>{{$course->name}}</h2>
                             </a>
 

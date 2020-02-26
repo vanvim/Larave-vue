@@ -18,4 +18,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/khoa_hoc/{name}_{id}','DetailController@courseDetail' );
+Route::get('/khoa_hoc/{id}.html','DetailController@courseDetail' )->name('courseDetail');

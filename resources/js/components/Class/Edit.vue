@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
     <div>
         <Edit></Edit>
         <a-table

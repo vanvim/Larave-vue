@@ -18,14 +18,14 @@
     </div>
     <div class="container">
         <div class="row">
-            @foreach($courses as $course)
+            @foreach($class as $item)
                 <div class="col-sm-6 col-xl-4 col-md-4 mb-4">
                     <div class="product">
                         <div class="product-image-thumb">
                             <img src="./img/2.jpg">
                         </div>
                         <div class="name">
-                            <h2>{{$course->name}}</h2>
+                            <h2>{{$item->name}}</h2>
                         </div>
                     </div>
 
