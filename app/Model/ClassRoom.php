@@ -10,17 +10,17 @@ class ClassRoom extends Model
     public $timestamps = false;
 
     public function student(){
-        return $this->hasMany('App\Model\Course','class_id','id');
+        return $this->hasMany('App\Models\Student','class_id','id');
     }
 
     public function course(){
-        return $this->belongsTo('App\Model\Course','course_id','id');
+        return $this->belongsTo('App\Models\Course','course_id','id');
     }
     public function teacher(){
-        return $this->belongsTo('App\Model\Teacher','teache_id','id');
+        return $this->belongsTo('App\Models\Teacher','teache_id','id');
     }
 
     public function pay(){
-        return $this->hasMany('App\Model\Pay','class_id','id');
+        return $this->hasMany('App\Models\PayMent','class_id','id');
     }
 }

@@ -63,6 +63,18 @@
             ]"
                         />
                     </a-form-item>
+                    <div>
+                        <label>Ảnh đại diện:</label>
+                        <span v-if="!img">
+                        <img  v-if="isUpdate" :src="'./img/'+dataUpdate.img" alt="logo" width="200px">
+                        <img v-if="!isUpdate" src="https://justice.org.au/wp-content/uploads/2017/08/avatar-icon.png" alt="logo"
+                             width="200px">
+                    </span>
+                        <span v-if="img" >
+                        <img :src="img" alt="logo" width="200px">
+                    </span>
+                        <input type="file" v-on:change="onImageChange"  class="form-control" name="img" enctype="multipart/form-data">
+                    </div>
 
                 </a-form>
 
@@ -83,6 +95,7 @@
             return {
                 visible: false,
                 formItemLayout,
+                img: '',
                 form: this.$form.createForm(this, {name: 'dynamic_rule'}),
             }
         },
@@ -99,6 +112,15 @@
             showModal() {
                 this.clearForm();
                 this.visible = true
+            },onImageChange(e) {
+                let file = new FileReader();
+
+                file.readAsDataURL(e.target.files[0]);
+
+                file.onload = (e) => {
+                    this.img = e.target.result;
+                }
+
             },
             handleOk() {
                 this.form.validateFields((err, values) => {
@@ -108,7 +130,9 @@
                                 "id" : store.dataUpdate.id,
                                 "name": values.name,
                                 "date_training": values.date_training,
-                                "tuition": values.tuition
+                                "tuition": values.tuition,
+                                "img": this.img,
+
                             }
                             console.log(data)
                             axios.post('http://127.0.0.1:8000/api/editCourse', data).then(response => {
@@ -132,7 +156,9 @@
                             let data = {
                                 "name": values.name,
                                 "date_training": values.date_training,
-                                "tuition": values.tuition
+                                "tuition": values.tuition,
+                                "img": this.img,
+
                             }
                             console.log(data)
                             axios.post('http://127.0.0.1:8000/api/addCourse', data).then(response => {

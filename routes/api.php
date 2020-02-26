@@ -41,7 +41,7 @@ Route::post('deleteTeacher','TeacherController@deleteTeacher')->name('deleteTeac
 Route::get('listQualification','QualificationController@index')->name('getQualification');
 Route::post('addQualification','QualificationController@addQualification')->name('addQualification');
 Route::post('editQualification','QualificationController@editQualification')->name('editQualification');
-Route::post('deleteQualification','QualificationController@deleteQualification')->name('deleteQualification');
+Route::post('deleteQualification','QualificationControllers@deleteQualification')->name('deleteQualification');
 
 Route::get('listPay','PayController@index')->name('getPay');
 Route::post('addPay','PayController@addPay')->name('addPay');

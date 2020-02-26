@@ -14,6 +14,6 @@ class Pay extends Model
     }
 
     public function class(){
-        return $this->belongsTo('App\Model\Class','class_id','id');
+        return $this->belongsTo('App\Model\ClassRoom','class_id','id');
     }
 }

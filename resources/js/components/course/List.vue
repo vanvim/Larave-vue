@@ -6,9 +6,12 @@
                 :dataSource="data"
                 rowKey='id'
         >
+            <div slot="img" slot-scope="text, record, index">
+                <img :src="'./img/'+record.img" width="100px">
+            </div>
             <template slot="operation" slot-scope="text, record, index">
                 <div class="editable-row-operations">
-        <span>
+                    <span>
           <a @click="() => edit(record)"><i class="fas fa-pencil-alt" ></i></a>&nbsp;&nbsp;
             <a @click="() => show()"><i class="fas fa-trash-alt"></i></a>
         </span>
@@ -54,6 +57,11 @@
             dataIndex: 'tuition',
             key: 'tuition',
         }, {
+            title: 'img',
+            dataIndex: 'img',
+            key: 'img',
+            scopedSlots: { customRender: 'img' },
+        },{
             title: 'Hành động',
             dataIndex: 'operation',
             key: 'operation',
