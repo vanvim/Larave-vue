@@ -27,7 +27,7 @@
         "@fortawesome/fontawesome-free": "^5.12.1",
         "admin-lte": "^3.0.1",
         "ant-design-vue": "^1.4.10",
-        "moment": "^2.24.0",
+        "moment": "^2.29.2",
         "vue-axios": "^2.1.5",
         "vue-carousel": "^0.18.0",
         "vue-coverflow": "^2.2.0",
